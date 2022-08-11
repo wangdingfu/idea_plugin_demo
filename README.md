@@ -1,57 +1,45 @@
+# 开发我的第一个插件
 
-本次案例使用`Using Gradle`方式创建插件项目
 
-
+> 本次案例使用`Using Gradle`方式创建插件项目
 
 ## 创建插件
 - 1、打开`idea-->new Project`进入新建页面
 
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198184914.png)
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198191840.png)
+![img_1.png](img/img_1.png)
+![img_2.png](img/img_2.png)
 
 ## 认识插件相关配置
 
-### plugin.xml
+### 认识`plugin.xml`及相关配置属性
 
+![img_18.png](img/img_18.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198203578.png)
-
-#### 插件首页描述信息
+### 插件首页描述信息
 
 >将插件描述信息交给gradle来读取. 可以参考[gradle中读取插件描述信息](###gradle中读取插件描述信息)
+![img_19.png](img/img_19.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198213339.png)
+### 配置extensions(扩展属性)
+![img_20.png](img/img_20.png)
 
-#### 配置extensions(扩展属性)
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198221455.png)
-
-###### applicationService
-> 在扩展属性中配置``标签（将service示例交给`Intellij`来管理）
-
+> 在扩展属性中配置`applicationService`标签（将service示例交给`Intellij`来管理）
 ```xml
 <!-- 将FuDocClassParserImpl类交给Intellij管理 需要的时候直接通过ApplicationManager.getApplication().getService(clazz)获取即可 -->
 <applicationService serviceImplementation="com.wdf.fudoc.parse.FuDocClassParserImpl"/>
 ```
 
-###### notificationGroup
 
 >在扩展属性中配置`notificationGroup`标签(定义一个通知组). 可以参考[弹出提示框](##弹出提示框)了解他的作用和使用场景
-
 ```xml
 <notificationGroup id="fu_doc_notify_group" displayType="BALLOON"/>
 ```
-
-###### projectService
 
 >在扩展属性中配置`projectService`标签（定义数据持久化组件）. 可以参考[新建第一个持久化数据组件](##新建第一个持久化数据组件)了解他的作用和使用场景
 ```xml
 <projectService serviceImplementation="com.wdf.fudoc.config.state.FuDocSetting"/>
 ```
 
-###### projectConfigurable
 >在扩展属性中配置`projectConfigurable`标签(定义IDEA的配置页面). 可以参考[新建第一个配置页面](##新建第一个配置页面)了解他的作用和使用场景
 ```xml
 <projectConfigurable instance="com.wdf.fudoc.config.configurable.FuDocSettingConfigurable"
@@ -65,8 +53,9 @@
 
 > 还有非常多的属性等待你的扩展...
 
+---
 
-#### 配置actions(在idea上的触发行为配置)
+### 配置actions(在idea上的触发行为配置)
 ```xml
     <actions>
         <!-- Add your actions here -->
@@ -91,17 +80,14 @@
 - `first-keystroke`: 第一个快捷键（当然还可以为这个行为添加多个快捷键）
 
 ###  认识`build.gradle.kts`
+![img_22.png](img/img_22.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198267818.png)
+### gradle中读取插件描述信息
+![img_23.png](img/img_23.png)
 
-#### gradle中读取插件描述信息
+![img_24.png](img/img_24.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198273886.png)
-
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198279797.png)
-
-###### 插件描述信息示例
+> 插件描述信息示例
 ```markdown
 <!-- Plugin description -->
 # Generate MarkDown API DOC
@@ -149,7 +135,7 @@
 <!-- Plugin description end -->
 ```
 
-###### 插件变更记录示例
+>插件变更记录示例
 ```markdown
 <!-- Plugin description -->
 
@@ -183,22 +169,21 @@
 <!-- Plugin description end -->
 ```
 
+---
 
 
 ## 开始编码
 
 ### 编码前需要的配置
-####  `plugin.xml`
-###### 新增依赖
+> `plugin.xml`
 ```xml
 <depends>com.intellij.modules.java</depends>
 ```
 
-####  `build.gradle.kts`
+> `build.gradle.kts`
 
-###### 添加依赖和设置编码
+![img_31.png](img/img_31.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198309797.png)
 ```
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
@@ -238,22 +223,18 @@ tasks {
 
 ### 新建第一个`Action`
 
+![img_25.png](img/img_25.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198320723.png)
-
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198327124.png)
+![img_26.png](img/img_26.png)
 
 >创建完Action后 会自动在`plugin.xml`上新增一个行为配置
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198332709.png)
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198338637.png)
+![img_27.png](img/img_27.png)
+![img_28.png](img/img_28.png)
 
 
 ### 弹出提示框
 
-###### 在`plugin.xml`中配置消息组
+> 在`plugin.xml`中配置消息组
 ```xml
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup id="demo_notify_group" displayType="BALLOON"/>
@@ -261,7 +242,7 @@ tasks {
 ```
 
 
-###### 新建消息通知类
+>新建消息通知类
 
 ```java
 package com.example.demo;
@@ -292,7 +273,7 @@ public class DemoNotification {
 }
 ```
 
-###### 在`DemoAction`中调用消息通知
+> 在`DemoAction`中调用消息通知
 ```java
 package com.example.demo;
 
@@ -314,26 +295,22 @@ public class DemoAction extends AnAction {
 
 ```
 
-###### 测试弹框
+> 测试弹框
 
 > 第一次运行需要下载很多东西 启动会比较慢
 
+![img_29.png](img/img_29.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198353336.png)
+![img_32.png](img/img_32.png)
 
+![img_33.png](img/img_33.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198359561.png)
-
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198365710.png)
-
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198372409.png)
+![img_42.png](img/img_42.png)
 
 ### 新建第一个持久化数据组件
 
 
-#### 新增持久化组件
+> 新增持久化组件
 
 ```java
 package com.example.demo;
@@ -377,7 +354,7 @@ public class DemoStateSetting implements PersistentStateComponent<DemoStateSetti
 
 ```
 
-##### 在`plugin.xml`中配置持久化组件
+> 在`plugin.xml`中配置持久化组件
 ```xml
       <projectService serviceImplementation="com.example.demo.DemoStateSetting"/>
 ```
@@ -388,14 +365,10 @@ public class DemoStateSetting implements PersistentStateComponent<DemoStateSetti
 
 ### 新建第一个设置页面
 
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198385086.png)
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198390905.png)
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198396469.png)
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198402049.png)
+![img_35.png](img/img_35.png)
+![img_36.png](img/img_36.png)
+![img_37.png](img/img_37.png)
+![img_38.png](img/img_38.png)
 
 >新建java类将页面交给`Intellij`来控制设置页面
 ```java
@@ -537,34 +510,27 @@ public class DemoSetting {
 ```
 > 点击调试 在弹出的窗口中进入IDEA`Settings`页面
 
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198417572.png)
+![img_39.png](img/img_39.png)
 
 > 测试保存数据并重启项目查看数据是否被持久化
 
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198424895.png)
+![img_40.png](img/img_40.png)
 
 > 重启项目后进入设置页面发现上一次保存的数据还在
 
 > 进入项目`.idea`中. 发现是讲内容保存在了`DemoStateSetting.xml`文件中
 
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198432418.png)
+![img_41.png](img/img_41.png)
 
 
 ## 打包插件并安装到idea中
 
-###  编译插件
+> 编译`DemoPlugin`
 
+![img_43.png](img/img_43.png)
 
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198448907.png)
+> 将`DemoPlugin`插件安装到idea中使用
 
-### 安装插件到本地
-
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198455419.png)
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198462346.png)
-
-![上传成功！](https://ceph-dev-pub.dz11.com/fed-doc/1660198473700.png)
+![img_44.png](img/img_44.png)
+![img_45.png](img/img_45.png)
+![img_46.png](img/img_46.png)
